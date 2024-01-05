@@ -1,6 +1,8 @@
 import React from 'react';
 import { View, Text, StyleSheet, Dimensions} from 'react-native';
-import Pdf from 'react-native-pdf';
+import PdfViewer from '../components/visualizadores/pdfViewer';
+import ImageViewer from '../components/visualizadores/imageViewer';
+import VideoViewer from '../components/visualizadores/VideoViewer';
 
 
 class ViewNoteScreen extends React.Component {
@@ -8,31 +10,29 @@ class ViewNoteScreen extends React.Component {
       super(props);
       this.state = {
         folderContent: null,
-        source: { uri: this.props.route.params.ref, cache: false },
+        source: this.props.route.params.ref,
+        type: this.props.route.params.type
       };
+      console.log(this.state.type);
+      this.imageFormats = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp'];
+      this.videoFormats = ['mp4','avi','mov','mkv','wmv','flv',];
   }
     render() {
         return (
             <View style={styles.container}>
-                <Text>Visualización de Nota</Text>
-                {/* Aquí puedes mostrar el contenido de la nota */}
-                <Pdf 
-              trustAllCerts={false}
-              source={this.state.source}
-              onLoadComplete={(numberOfPages, filePath) => {
-              console.log(`Number of pages: ${numberOfPages}`);
-              }}
-              onPageChanged={(page, numberOfPages) => {
-              console.log(`Current page: ${page}`);
-              }}
-              onError={error => {
-              console.log(error);
-              }}
-              onPressLink={uri => {
-              console.log(`Link pressed: ${uri}`);
-              }}
-              style={styles.pdf}
-            />
+              {this.state.type === 'pdf' &&
+                <PdfViewer data={this.state.source} />
+              }
+              {this.state.type === 'txt' &&
+                <Text>{this.state.source}</Text>
+              }
+              {this.imageFormats.includes(this.state.type) &&
+                <ImageViewer data={this.state.source} />
+              }
+              {this.videoFormats.includes(this.state.type) &&
+                <VideoViewer data={this.state.source} />
+              }
+              
             </View>
         );
     }
@@ -45,11 +45,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  pdf: {
-      flex:1,
-      width:Dimensions.get('window').width,
-      height:Dimensions.get('window').height,
-  }
 });
 
 export default ViewNoteScreen;

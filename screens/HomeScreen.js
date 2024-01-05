@@ -1,9 +1,10 @@
 import React from 'react';
-import { View, Text, Button, StyleSheet } from 'react-native';
+import { View, Text, Button, StyleSheet, TouchableOpacity } from 'react-native';
 import ImportButton from '../components/menu/importButton';
 import FolderCreator from '../components/menu/folderCreator';
 import * as FileSystem from 'expo-file-system';
 import MenuItem from '../components/menu/menuItem';
+import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 
 
 class HomeScreen extends React.Component {
@@ -12,6 +13,8 @@ class HomeScreen extends React.Component {
       this.state = {
         folderContent: null,
         folderName: 'notes',
+        showCreateModal: false,
+        showCreateFolderModal: false,
       };
   }
 
@@ -19,7 +22,8 @@ class HomeScreen extends React.Component {
     if (ref === undefined) {
       ref = 'http://samples.leanpub.com/thereactnativebook-sample.pdf';
     }
-    this.props.navigation.navigate('ViewNote', {ref: ref});
+    let type = ref.split('.').pop();
+    this.props.navigation.navigate('ViewNote', {ref: ref, type: type});
   }
 
   getFolderContent = async () => {
@@ -76,8 +80,7 @@ class HomeScreen extends React.Component {
                 }} />
                 }
                 <Text>Lista de Carpetas y Notas</Text>
-                <ImportButton folder={this.state.folderName} />
-                <FolderCreator folder={this.state.folderName}/>
+                
               </View>
               {/* Aquí puedes mostrar la lista de carpetas y notas disponibles */}
               <View style={styles.itemContainer} >
@@ -93,17 +96,38 @@ class HomeScreen extends React.Component {
                       this.setState({ folderName: newFolderPath });
                     } else {
                       console.log('Mostrar nota \n');
-                      if (item.name.split('.').pop() === 'pdf') {
-                        this.handleViewNote(`${FileSystem.documentDirectory}/${this.state.folderName}/${item.name}`);
-                      } else {
-                        console.log('No es un pdf');
-                      }
+                      this.handleViewNote(`${FileSystem.documentDirectory}${this.state.folderName}/${item.name}`);
                     }
                   }}
                   folderPath={this.state.folderName}
                 />
               ))}
               </View>
+              {this.state.showCreateFolderModal &&
+                <View style={{position: 'absolute', bottom: 0, right: 0, left: 0, top: 0, backgroundColor: "rgba(0,0,0,0.3)", justifyContent: 'center', alignItems: 'center'}}>
+                  <View style={{backgroundColor: '#fff', padding: 30, borderRadius: 10}}>
+                    <TouchableOpacity onPress={()=>{this.setState({showCreateFolderModal: !this.state.showCreateFolderModal});}} style={{position: 'absolute', top: 0, right: 0, padding: 10}}>
+                      <Text>Cerrar</Text>
+                    </TouchableOpacity>
+                    <FolderCreator folder={this.state.folderName}/>
+                  </View>
+                </View>
+              }
+              {this.state.showCreateModal && 
+                <View style={{position: 'absolute', bottom: 60, right: 20, backgroundColor: '#fff', padding: 10}}>
+                  <TouchableOpacity onPress={()=>{this.setState({showCreateModal: !this.state.showCreateModal, showCreateFolderModal: !this.state.showCreateFolderModal});}}>
+                    <Text>Crear Carpeta</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity onPress={()=>{this.setState({showCreateModal: !this.state.showCreateModal});}}>
+                    <Text>Crear Nota</Text>
+                  </TouchableOpacity>
+                  <ImportButton folder={this.state.folderName} />
+                </View>
+              }
+              <TouchableOpacity style={{position: 'absolute', bottom: 20, right: 20}} onPress={() => {this.setState({showCreateModal: !this.state.showCreateModal});}}>
+                <FontAwesomeIcon name="plus" size={30} color="#000" />
+              </TouchableOpacity>
+              
           </View>
       );
   }

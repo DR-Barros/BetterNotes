@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
-import { View, Image, StyleSheet } from 'react-native';
+import { View, Image, StyleSheet, Text } from 'react-native';
 
 interface ImageViewerProps {
-    source: string;
+    data: string;
 }
 interface ImageViewerState {
     source: string;
@@ -12,8 +12,9 @@ class ImageViewer extends Component<ImageViewerProps, ImageViewerState> {
     constructor(props) {
         super(props);
         this.state = {
-            source: props.source
+            source: props.data
         };
+        console.log(this.props.data);
     }
     render() {
         return (
@@ -21,6 +22,7 @@ class ImageViewer extends Component<ImageViewerProps, ImageViewerState> {
             <Image
             source={{ uri: this.state.source}} // Reemplaza con la URL o ruta local de la imagen
             style={styles.image}
+            alt='Imagen de la nota'
             />
         </View>
         );
@@ -32,6 +34,8 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    width:'100%',
+    height:'100%'
   },
   image: {
     width: '80%',
