@@ -7,7 +7,7 @@ class DrawingComponent extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            color: '#000000',
+            color: this.props.color,
             lineWidth: 5,
             canvasStyle: {
                 backgroundColor: '#ffffff',
@@ -64,24 +64,21 @@ class DrawingComponent extends Component {
     undoCanvas(){
         this.canvasRef.current.undo();
     }
+    componentDidUpdate(prevProps: Readonly<{}>): void {
+        if (prevProps.color !== this.props.color) {
+            this.setState({ color: this.props.color });
+            console.log('color cambiado');
+        }
+    }
+
     render() {
         return (
-            <View /* {...this.panResponder.panHandlers} */ style={styles.container}>
-                <SketchCanvas
-                    ref={this.canvasRef}
-                    style={{ flex: 1 }}
-                    strokeColor={"red"}
-                    strokeWidth={7}
-                />
-                <View style={styles.buttons}>
-                    <TouchableOpacity style={styles.button} onPress={this.clearCanvas}>
-                        <Text>Clear</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.button} onPress={this.undoCanvas}>
-                        <Text>Undo</Text>
-                    </TouchableOpacity>
-                </View>
-            </View>
+            <SketchCanvas
+                ref={this.canvasRef}
+                style={this.props.style}
+                strokeColor={this.state.color}
+                strokeWidth={this.state.lineWidth}
+            />
         );
     }
 }
@@ -89,9 +86,7 @@ class DrawingComponent extends Component {
 
 const styles = StyleSheet.create({
     container: {
-        width: "100%",
-        height: "100%",
-        zIndex: 1
+        
     }
 });
 
