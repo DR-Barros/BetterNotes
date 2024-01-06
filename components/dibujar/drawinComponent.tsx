@@ -1,5 +1,5 @@
 import React, { Component, useRef } from 'react';
-import { View, StyleSheet, TouchableOpacity, Text } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Text, PanResponder } from 'react-native';
 import { SketchCanvas } from "@kichiyaki/react-native-sketch-canvas";
 
 
@@ -15,6 +15,48 @@ class DrawingComponent extends Component {
             },
         };
         this.canvasRef = React.createRef();
+        /* this.panResponder = PanResponder.create({
+            onStartShouldSetPanResponder: (evt, gestureState) => {
+                console.log('onStartShouldSetPanResponder');
+                return true;
+            },
+            onStartShouldSetPanResponderCapture: (evt, gestureState) => {
+                console.log('onStartShouldSetPanResponderCapture');
+                return true;
+            },
+            onMoveShouldSetPanResponder: (evt, gestureState) => {
+                console.log('onMoveShouldSetPanResponder');
+                return true;
+            },
+            onMoveShouldSetPanResponderCapture: (evt, gestureState) => {
+                console.log('onMoveShouldSetPanResponderCapture');
+                return true;
+            },
+            onPanResponderGrant: (evt, gestureState) => {
+                console.log('onPanResponderGrant');
+                return true;
+            },
+            onPanResponderMove: (evt, gestureState) => {
+                console.log('onPanResponderMove', evt.nativeEvent.identifier);
+                return true;
+            },
+            onPanResponderTerminationRequest: (evt, gestureState) => {
+                console.log('onPanResponderTerminationRequest');
+                return true;
+            },
+            onPanResponderRelease: (evt, gestureState) => {
+                console.log('onPanResponderRelease');
+                return true;
+            },
+            onPanResponderTerminate: (evt, gestureState) => {
+                console.log('onPanResponderTerminate');
+                return true;
+            },
+            onShouldBlockNativeResponder: (evt, gestureState) => {
+                console.log('onShouldBlockNativeResponder');
+                return true;
+            },
+        }); */
     }
     clearCanvas = () => {
         this.canvasRef.current.clear();
@@ -24,7 +66,7 @@ class DrawingComponent extends Component {
     }
     render() {
         return (
-            <View style={styles.container}>
+            <View /* {...this.panResponder.panHandlers} */ style={styles.container}>
                 <SketchCanvas
                     ref={this.canvasRef}
                     style={{ flex: 1 }}

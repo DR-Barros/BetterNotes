@@ -22,10 +22,9 @@ class ViewNoteScreen extends React.Component {
     render() {
         return (
             <View style={styles.container}>
-              <Button title='volver' onPress={()=>{this.props.navigation.goBack()}} />
-              {/* <DrawingComponent /> */}
+              {/* <Button title='volver' onPress={()=>{this.props.navigation.goBack()}} /> */}
               {this.state.type === 'pdf' &&
-                <PdfViewer data={this.state.source} />
+                <PdfViewer data={this.state.source} goBack={()=>{this.props.navigation.goBack()}} />
               }
               {this.state.type === 'txt' &&
                 <Text>{this.state.source}</Text>
