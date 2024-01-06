@@ -1,8 +1,10 @@
 import React from 'react';
-import { View, Text, StyleSheet, Dimensions} from 'react-native';
+import { View, Text, StyleSheet, Dimensions, Button} from 'react-native';
 import PdfViewer from '../components/visualizadores/pdfViewer';
 import ImageViewer from '../components/visualizadores/imageViewer';
-import VideoViewer from '../components/visualizadores/VideoViewer';
+import VideoViewer from '../components/visualizadores/videoViewer';
+import DrawingComponent from '../components/dibujar/drawinComponent';
+import colores from '../style/colors';
 
 
 class ViewNoteScreen extends React.Component {
@@ -20,6 +22,8 @@ class ViewNoteScreen extends React.Component {
     render() {
         return (
             <View style={styles.container}>
+              <Button title='volver' onPress={()=>{this.props.navigation.goBack()}} />
+              {/* <DrawingComponent /> */}
               {this.state.type === 'pdf' &&
                 <PdfViewer data={this.state.source} />
               }
@@ -44,6 +48,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: colores.verdeMenta
   },
 });
 

@@ -1,7 +1,8 @@
 import { StyleSheet } from 'react-native'
+import colores from '../../colors';
 const MenuItemStyle = StyleSheet.create({
     container: {
-        backgroundColor: '#e0e0e0',
+        backgroundColor: colores.grisClaro,
         padding: 16,
         marginVertical: 8,
         marginHorizontal: 16,

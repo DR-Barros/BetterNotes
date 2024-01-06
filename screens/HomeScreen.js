@@ -5,6 +5,8 @@ import FolderCreator from '../components/menu/folderCreator';
 import * as FileSystem from 'expo-file-system';
 import MenuItem from '../components/menu/menuItem';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
+import SuperiorBar from '../components/menu/superiorBar';
+import colores from '../style/colors';
 
 
 class HomeScreen extends React.Component {
@@ -72,15 +74,14 @@ class HomeScreen extends React.Component {
       return (
           <View style={styles.container}>
               <View style={styles.superiorBar}>
-                {this.state.folderName !== 'notes' && 
-                <Button title="Atrás" onPress={() => {
-                  const folderName = this.state.folderName.split('/');
-                  folderName.pop();
-                  this.setState({folderName: folderName.join('/')});
-                }} />
-                }
-                <Text>Lista de Carpetas y Notas</Text>
-                
+                <SuperiorBar 
+                  folder={this.state.folderName}
+                  onPress={() => {
+                    const folderName = this.state.folderName.split('/');
+                    folderName.pop();
+                    this.setState({folderName: folderName.join('/')});
+                  }} 
+                />
               </View>
               {/* Aquí puedes mostrar la lista de carpetas y notas disponibles */}
               <View style={styles.itemContainer} >
@@ -125,7 +126,7 @@ class HomeScreen extends React.Component {
                 </View>
               }
               <TouchableOpacity style={{position: 'absolute', bottom: 20, right: 20}} onPress={() => {this.setState({showCreateModal: !this.state.showCreateModal});}}>
-                <FontAwesomeIcon name="plus" size={30} color="#000" />
+                <FontAwesomeIcon name="plus" size={30} color={colores.verdeOliva} />
               </TouchableOpacity>
               
           </View>
@@ -137,11 +138,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
+    backgroundColor: colores.grisExtraClaro,
   },
   superiorBar: {
     flexDirection: 'row',
     justifyContent: 'space-evenly',
-    height: 100,
+    height: 70,
     width: '100%',
   },
   itemContainer: {
